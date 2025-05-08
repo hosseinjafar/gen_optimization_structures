@@ -29,6 +29,11 @@ namespace VMS.TPS
         {
             string pth_structure_relations = "Brain-HA-WBRT-Structures.json";
 
+            if (File.Exists(pth_structure_relations)) {
+                MessageBox.Show("structure relations file was found");
+            } else {
+                MessageBox.Show("structure relations file was not found");
+            }
             // Load the patient and structures from context
             context.Patient.BeginModifications();
             StructureSet plan_structure_set = context.StructureSet;
