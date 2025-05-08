@@ -1,0 +1,186 @@
+[
+    {
+        "Name": "Body",
+        "Role": "Anatomical",
+        "Margin":0
+    },
+    {
+        "Name": "Brain",
+        "Role": "Anatomical",
+        "Margin":0
+    },
+    {
+        "Name": "Eye Lt",
+        "Role": "Anatomical",
+        "Margin":0
+    },
+    {
+        "Name": "Eye Rt",
+        "Role": "Anatomical",
+        "Margin":0
+    },
+    {
+        "Name": "Inner Ear Lt",
+        "Role": "Anatomical",
+        "Margin":0
+    },
+    {
+        "Name":"Inner Ear Rt",
+        "Role": "Anatomical",
+        "Margin":0
+    },
+    {   
+        "Name":"Lens Lt",
+        "Role": "Anatomical",
+        "Margin":0
+    },
+    {
+        "Name":"Lens Rt",
+        "Role": "Anatomical",
+        "Margin":0
+    },
+    {
+        "Name":"Optic Chiasm",
+        "Role": "Anatomical",
+        "Margin":0
+    },
+    {
+        "Name":"Optic Nerve Lt",
+        "Role": "Anatomical",
+        "Margin":0
+    },
+    {
+        "Name":"Optic Nerve Rt",
+        "Role": "Anatomical",
+        "Margin":0
+    },
+    {
+        "Name":"Spinal Cord",
+        "Role": "Anatomical",
+        "Margin":0
+    },
+    {
+        "Name":"Hippo Lt",
+        "Role": "Anatomical",
+        "Margin":0,
+        "HighResolution": true,
+        "Comment": "Follow RTOG 0933 Atlas"
+    },
+    {
+        "Name":"Hippo Rt",
+        "Role": "Anatomical",
+        "Margin":0,
+        "HighResolution": true,
+        "Comment": "Follow RTOG 0933 Atlas"
+    },
+    {
+        "Name":"Hippocampi",
+        "Role": "Anatomical",
+        "Parents": ["Hippo Lt", "Hippo Rt"],
+        "Margin":0,
+        "HighResolution": true
+    },
+    {
+        "Name":"NonePTV",
+        "Role": "Anatomical",
+        "Parents": ["Body"],
+        "Subtract" : ["PTV_30"],
+        "Margin":0
+    },
+
+    {
+        "Name":"Lens PRV Lt",
+        "Role": "Planning",
+        "Parents": ["Lens Lt"],
+        "Margin":3
+    },
+    {
+        "Name":"Lens PRV Rt",
+        "Role": "Planning",
+        "Parents": ["Lens Rt"],
+        "Margin":3
+    },
+    {
+        "Name":"CTV_30",
+        "Role": "Planning",
+        "Parents": ["Brain"],
+        "Margin":0
+    },
+    {
+        "Name":"GTV",
+        "Role": "Anatomical",
+        "Margin":0,
+        "HighResolution": true,
+        "Comment": "Outline if only it falls within 5 mm of Hippocampi."
+    },
+    {
+        "Name":"GTV+5mm",
+        "Role": "Planning",
+        "Parents": ["GTV"],
+        "Margin":5,
+        "HighResolution": true
+    },
+    {
+        "Name":"Hippocampi_05",
+        "Role": "Planning",
+        "Parents": ["Hippocampi"],
+        "Margin":5,
+        "HighResolution": true,
+        "Comment": "Margin added only in the 3D direction"
+    },
+    {
+        "Name":"PTV_30",
+        "Role": "Planning",
+        "Parents": ["CTV_30", "GTV+5mm"],
+        "Margin":0,
+        "HighResolution": true,
+        "Subtract" : ["Hippocampi_05"]
+    },
+    {
+        "Name":"optPTV_30",
+        "Role": "Optimization",
+        "Parents": ["PTV_30"],
+        "Margin":3,
+        "HighResolution": true
+    },
+    {
+        "Name":"optHippo Lt",
+        "Role": "Optimization",
+        "Parents": ["Hippo Lt"],
+        "Subtract" : ["GTV+5mm"],
+        "Margin":4,
+        "HighResolution": true
+    },
+    {
+        "Name":"optHippo Rt",
+        "Role": "Optimization",
+        "Parents": ["Hippo Rt"],
+        "Subtract" : ["GTV+5mm"],
+        "Margin":4,
+        "HighResolution": true
+    },
+    {
+        "Name":"optHippo",
+        "Role": "Optimization",
+        "Parents": ["Hippocampi"],
+        "Subtract" : ["GTV+5mm"],
+        "Margin":4,
+        "HighResolution": true,
+        "Comment": "Use only if GTV+5mm is on both sides"
+    },
+    {
+        "Name":"optNonPTV",
+        "Role": "Optimization",
+        "Parents": "NonePTV",
+        "Margin": 30,
+        "Comment": "After adding margin, crop parts extending outside the body or into PTV_30"
+    },
+    {
+        "Name":"Hippo_Limits",
+        "Role": "Helper",
+        "Parents": ["Hippocampi_05", "PTV_30"],
+        "Margin": 0,
+        "Comment": "Used for field placement. defined as the most superior and most inferior slice of Hippocampi_05 extended on PTV_30"
+    }
+]
+    
