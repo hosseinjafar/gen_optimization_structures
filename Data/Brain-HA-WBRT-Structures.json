@@ -1,0 +1,304 @@
+[
+  {
+    "Name": "Body",
+    "Role": "Anatomical",
+    "Margin": 0.0,
+    "Parents": null,
+    "HighResolution": null,
+    "Subtract": null,
+    "Comment": null
+  },
+  {
+    "Name": "Brain",
+    "Role": "Anatomical",
+    "Margin": 0.0,
+    "Parents": null,
+    "HighResolution": null,
+    "Subtract": null,
+    "Comment": null
+  },
+  {
+    "Name": "Eye Lt",
+    "Role": "Anatomical",
+    "Margin": 0.0,
+    "Parents": null,
+    "HighResolution": null,
+    "Subtract": null,
+    "Comment": null
+  },
+  {
+    "Name": "Eye Rt",
+    "Role": "Anatomical",
+    "Margin": 0.0,
+    "Parents": null,
+    "HighResolution": null,
+    "Subtract": null,
+    "Comment": null
+  },
+  {
+    "Name": "Inner Ear Lt",
+    "Role": "Anatomical",
+    "Margin": 0.0,
+    "Parents": null,
+    "HighResolution": null,
+    "Subtract": null,
+    "Comment": null
+  },
+  {
+    "Name": "Inner Ear Rt",
+    "Role": "Anatomical",
+    "Margin": 0.0,
+    "Parents": null,
+    "HighResolution": null,
+    "Subtract": null,
+    "Comment": null
+  },
+  {
+    "Name": "Lens Lt",
+    "Role": "Anatomical",
+    "Margin": 0.0,
+    "Parents": null,
+    "HighResolution": null,
+    "Subtract": null,
+    "Comment": null
+  },
+  {
+    "Name": "Lens Rt",
+    "Role": "Anatomical",
+    "Margin": 0.0,
+    "Parents": null,
+    "HighResolution": null,
+    "Subtract": null,
+    "Comment": null
+  },
+  {
+    "Name": "Optic Chiasm",
+    "Role": "Anatomical",
+    "Margin": 0.0,
+    "Parents": null,
+    "HighResolution": null,
+    "Subtract": null,
+    "Comment": null
+  },
+  {
+    "Name": "Optic Nerve Lt",
+    "Role": "Anatomical",
+    "Margin": 0.0,
+    "Parents": null,
+    "HighResolution": null,
+    "Subtract": null,
+    "Comment": null
+  },
+  {
+    "Name": "Optic Nerve Rt",
+    "Role": "Anatomical",
+    "Margin": 0.0,
+    "Parents": null,
+    "HighResolution": null,
+    "Subtract": null,
+    "Comment": null
+  },
+  {
+    "Name": "Spinal Cord",
+    "Role": "Anatomical",
+    "Margin": 0.0,
+    "Parents": null,
+    "HighResolution": null,
+    "Subtract": null,
+    "Comment": null
+  },
+  {
+    "Name": "Hippo Lt",
+    "Role": "Anatomical",
+    "Margin": 0.0,
+    "Parents": null,
+    "HighResolution": true,
+    "Subtract": null,
+    "Comment": "Follow RTOG 0933 Atlas"
+  },
+  {
+    "Name": "Hippo Rt",
+    "Role": "Anatomical",
+    "Margin": 0.0,
+    "Parents": null,
+    "HighResolution": true,
+    "Subtract": null,
+    "Comment": "Follow RTOG 0933 Atlas"
+  },
+  {
+    "Name": "Hippocampi",
+    "Role": "Anatomical",
+    "Margin": 0.0,
+    "Parents": [
+      "Hippo Lt",
+      "Hippo Rt"
+    ],
+    "HighResolution": true,
+    "Subtract": null,
+    "Comment": null
+  },
+  {
+    "Name": "NonePTV",
+    "Role": "Anatomical",
+    "Margin": 0.0,
+    "Parents": [
+      "Body"
+    ],
+    "HighResolution": null,
+    "Subtract": [
+      "PTV_30"
+    ],
+    "Comment": null
+  },
+  {
+    "Name": "Lens PRV Lt",
+    "Role": "Planning",
+    "Margin": 3.0,
+    "Parents": [
+      "Lens Lt"
+    ],
+    "HighResolution": null,
+    "Subtract": null,
+    "Comment": null
+  },
+  {
+    "Name": "Lens PRV Rt",
+    "Role": "Planning",
+    "Margin": 3.0,
+    "Parents": [
+      "Lens Rt"
+    ],
+    "HighResolution": null,
+    "Subtract": null,
+    "Comment": null
+  },
+  {
+    "Name": "CTV_30",
+    "Role": "Planning",
+    "Margin": 0.0,
+    "Parents": [
+      "Brain"
+    ],
+    "HighResolution": null,
+    "Subtract": null,
+    "Comment": null
+  },
+  {
+    "Name": "GTV",
+    "Role": "Anatomical",
+    "Margin": 0.0,
+    "Parents": null,
+    "HighResolution": true,
+    "Subtract": null,
+    "Comment": "Outline if only it falls within 5 mm of Hippocampi."
+  },
+  {
+    "Name": "GTV+5mm",
+    "Role": "Planning",
+    "Margin": 5.0,
+    "Parents": [
+      "GTV"
+    ],
+    "HighResolution": true,
+    "Subtract": null,
+    "Comment": null
+  },
+  {
+    "Name": "Hippocampi_05",
+    "Role": "Planning",
+    "Margin": 5.0,
+    "Parents": [
+      "Hippocampi"
+    ],
+    "HighResolution": true,
+    "Subtract": null,
+    "Comment": "Margin added only in the 3D direction"
+  },
+  {
+    "Name": "PTV_30",
+    "Role": "Planning",
+    "Margin": 0.0,
+    "Parents": [
+      "CTV_30",
+      "GTV+5mm"
+    ],
+    "HighResolution": true,
+    "Subtract": [
+      "Hippocampi_05"
+    ],
+    "Comment": null
+  },
+  {
+    "Name": "optPTV_30",
+    "Role": "Optimization",
+    "Margin": 3.0,
+    "Parents": [
+      "PTV_30"
+    ],
+    "HighResolution": true,
+    "Subtract": null,
+    "Comment": null
+  },
+  {
+    "Name": "optHippo Lt",
+    "Role": "Optimization",
+    "Margin": 4.0,
+    "Parents": [
+      "Hippo Lt"
+    ],
+    "HighResolution": true,
+    "Subtract": [
+      "GTV+5mm"
+    ],
+    "Comment": null
+  },
+  {
+    "Name": "optHippo Rt",
+    "Role": "Optimization",
+    "Margin": 4.0,
+    "Parents": [
+      "Hippo Rt"
+    ],
+    "HighResolution": true,
+    "Subtract": [
+      "GTV+5mm"
+    ],
+    "Comment": null
+  },
+  {
+    "Name": "optHippo",
+    "Role": "Optimization",
+    "Margin": 4.0,
+    "Parents": [
+      "Hippocampi"
+    ],
+    "HighResolution": true,
+    "Subtract": [
+      "GTV+5mm"
+    ],
+    "Comment": "Use only if GTV+5mm is on both sides"
+  },
+  {
+    "Name": "optNonPTV",
+    "Role": "Optimization",
+    "Margin": 30.0,
+    "Parents": [
+      "NonePTV"
+    ],
+    "HighResolution": null,
+    "Subtract": null,
+    "Comment": "After adding margin, crop parts extending outside the body or into PTV_30"
+  },
+  {
+    "Name": "Hippo_Limits",
+    "Role": "Helper",
+    "Margin": 0.0,
+    "Parents": [
+      "Hippocampi_05",
+      "PTV_30"
+    ],
+    "HighResolution": null,
+    "Subtract": null,
+    "Comment": "Used for field placement. defined as the most superior and most inferior slice of Hippocampi_05 extended on PTV_30"
+  }
+]
