@@ -14,8 +14,8 @@ using System.Data;
 #nullable enable
 
 // TODO: Replace the following version attributes by creating AssemblyInfo.cs. You can do this in the properties of the Visual Studio project.
-[assembly: AssemblyVersion("1.0.0.1")]
-[assembly: AssemblyFileVersion("1.0.0.1")]
+[assembly: AssemblyVersion("1.0.0.2")]
+[assembly: AssemblyFileVersion("1.0.0.2")]
 [assembly: AssemblyInformationalVersion("1.0")]
 
 // TODO: Uncomment the following line if the script requires write access.
@@ -45,7 +45,7 @@ namespace VMS.TPS
             }
 
             // Load the patient and structures from context
-            //context.Patient.BeginModifications();
+            context.Patient.BeginModifications();
             StructureSet plan_structure_set = context.StructureSet;
             List<Structure> structure_list = plan_structure_set.Structures.ToList();
 
