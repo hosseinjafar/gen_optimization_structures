@@ -69,6 +69,7 @@ namespace VMS.TPS
                 {"Anatomical", 0 },
                 {"Planning", 1 },
                 {"Optimization", 2 },
+                {"Helper", 3}
             };
             var sorted_structure_rels = structure_rels.OrderBy(rel => roleOrder[rel.Role]).ToList();
 
@@ -76,7 +77,6 @@ namespace VMS.TPS
             foreach (Structure_Relations relation in sorted_structure_rels)
             {
                 // create a new structure to be added to the structure set
-                Structure newStructure = plan_structure_set.AddStructure(relation.Role, relation.Name);
                 if (relation.Role == "Anatomical")
                 {
                     // make sure the structure is in the plan.
@@ -90,8 +90,13 @@ namespace VMS.TPS
                     }
                     MessageBox.Show("found anatomical structure:" + relation.Name);
                 }
+                else if (relation.Role == "Helper")
+                {
+                    continue;
+                }
                 else if (relation.Role == "Planning" || relation.Role == "Optimization")
                 {
+                    Structure newStructure = plan_structure_set.AddStructure(relation.Role, relation.Name);
                     // for debugging
                     continue;
                     if (relation.Parents != null)
