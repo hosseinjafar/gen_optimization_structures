@@ -14,8 +14,8 @@ using System.Data;
 #nullable enable
 
 // TODO: Replace the following version attributes by creating AssemblyInfo.cs. You can do this in the properties of the Visual Studio project.
-[assembly: AssemblyVersion("1.0.0.2")]
-[assembly: AssemblyFileVersion("1.0.0.2")]
+[assembly: AssemblyVersion("1.0.0.7")]
+[assembly: AssemblyFileVersion("1.0.0.7")]
 [assembly: AssemblyInformationalVersion("1.0")]
 
 // TODO: Uncomment the following line if the script requires write access.
@@ -96,9 +96,24 @@ namespace VMS.TPS
                 }
                 else if (relation.Role == "Planning" || relation.Role == "Optimization")
                 {
-                    Structure newStructure = plan_structure_set.AddStructure(relation.Role, relation.Name);
-                    // for debugging
-                    continue;
+                    // for debugging{
+                    Structure testStructure = plan_structure_set.AddStructure("Organ", "test_gen_struct");
+                    List<Structure> testQueries = Get_structures_by_name(structure_list, ["CTV_30", "GTV+5mm"]);
+                    // Check if any of the source structures are high resolution
+                    bool needsHighResolution = testQueries.Any(s => s.IsHighResolution);
+                    // Convert new structure to high resolution if needed
+                    if (needsHighResolution)
+                    {
+                        testStructure.ConvertToHighResolution();
+                    }
+                    foreach (Structure testQuery in testQueries)
+                    {
+                        testStructure.Or(testQuery);
+                    }
+
+                    break;
+                    //}
+                    Structure newStructure = plan_structure_set.AddStructure("Organ", relation.Name);
                     if (relation.Parents != null)
                     {
                         //get parent structure from context; apply union
