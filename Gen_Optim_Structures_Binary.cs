@@ -19,7 +19,7 @@ using System.Data;
 [assembly: AssemblyInformationalVersion("1.0")]
 
 // TODO: Uncomment the following line if the script requires write access.
-[assembly: ESAPIScript(IsWriteable = true)]
+// [assembly: ESAPIScript(IsWriteable = true)]
 
 namespace VMS.TPS
 {
@@ -97,6 +97,7 @@ namespace VMS.TPS
                 else if (relation.Role == "Planning" || relation.Role == "Optimization")
                 {
                     // for debugging{
+                    break;
                     Structure testStructure = plan_structure_set.AddStructure("Organ", "test_gen_struct");
                     List<Structure> testQueries = Get_structures_by_name(structure_list, ["CTV_30", "GTV+5mm"]);
                     // Check if any of the source structures are high resolution
@@ -111,7 +112,7 @@ namespace VMS.TPS
                         testStructure.Or(testQuery);
                     }
 
-                    break;
+                    //break;
                     //}
                     Structure newStructure = plan_structure_set.AddStructure("Organ", relation.Name);
                     if (relation.Parents != null)
