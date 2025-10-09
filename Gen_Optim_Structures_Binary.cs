@@ -75,7 +75,7 @@ namespace VMS.TPS
             };
             var sorted_structure_rels = structure_rels.OrderBy(rel => roleOrder[rel.Role]).ToList();
             ShowStructuresInDataGrid(sorted_structure_rels, structure_list);
-            /*
+
             // loop through each relation and create a new structure accordingly
             foreach (Structure_Relations relation in sorted_structure_rels)
             {
@@ -91,7 +91,7 @@ namespace VMS.TPS
                             "no structure " + relation.Name + "was found in" + pth_structure_relations
                             );
                     }
-                    MessageBox.Show("found anatomical structure:" + relation.Name);
+                    // System.Windows.MessageBox.Show("found anatomical structure:" + relation.Name);
                 }
                 else if (relation.Role == "Helper")
                 {
@@ -100,22 +100,20 @@ namespace VMS.TPS
                 else if (relation.Role == "Planning" || relation.Role == "Optimization")
                 {
                     // for debugging{
-                    break;
                     Structure testStructure = plan_structure_set.AddStructure("Organ", "test_gen_struct");
-                    List<Structure> testQueries = Get_structures_by_name(structure_list, ["CTV_30", "GTV+5mm"]);
+                    List<Structure> parent_structures = Get_structures_by_name(structure_list, ["CTV_30", "Spinal Cord"]);
                     // Check if any of the source structures are high resolution
-                    bool needsHighResolution = testQueries.Any(s => s.IsHighResolution);
+                    bool needsHighResolution = parent_structures.Any(s => s.IsHighResolution);
                     // Convert new structure to high resolution if needed
                     if (needsHighResolution)
                     {
                         testStructure.ConvertToHighResolution();
                     }
-                    foreach (Structure testQuery in testQueries)
+                    foreach (Structure testParent in parent_structures)
                     {
-                        testStructure.Or(testQuery);
+                        testStructure.SegmentVolume = testStructure.SegmentVolume.Or(testParent.SegmentVolume);
                     }
-
-                    //break;
+                    break;
                     //}
                     Structure newStructure = plan_structure_set.AddStructure("Organ", relation.Name);
                     if (relation.Parents != null)
@@ -145,7 +143,7 @@ namespace VMS.TPS
                         if (relation.HighResolution.Value) { newStructure.ConvertToHighResolution(); }
                     }
                 }
-            }*/
+            }
         }
         public List<Structure> Get_structures_by_name(List<Structure> structure_list, List<String> name_list)
         {
