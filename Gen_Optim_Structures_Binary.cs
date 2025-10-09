@@ -10,16 +10,18 @@ using VMS.TPS.Common.Model.Types;
 using Newtonsoft.Json;
 using System.IO;
 using System.Data;
+using static VMS.TPS.Script;
+using System.Windows.Forms;
 
 #nullable enable
 
 // TODO: Replace the following version attributes by creating AssemblyInfo.cs. You can do this in the properties of the Visual Studio project.
-[assembly: AssemblyVersion("1.0.0.7")]
-[assembly: AssemblyFileVersion("1.0.0.7")]
+[assembly: AssemblyVersion("1.0.0.10")]
+[assembly: AssemblyFileVersion("1.0.0.10")]
 [assembly: AssemblyInformationalVersion("1.0")]
 
 // TODO: Uncomment the following line if the script requires write access.
-// [assembly: ESAPIScript(IsWriteable = true)]
+[assembly: ESAPIScript(IsWriteable = true)]
 
 namespace VMS.TPS
 {
@@ -37,11 +39,11 @@ namespace VMS.TPS
 
             if (File.Exists(pth_structure_relations))
             {
-                MessageBox.Show("structure relations file was found:\n" + pth_structure_relations);
+                System.Windows.MessageBox.Show("structure relations file was found:\n" + pth_structure_relations);
             }
             else
             {
-                MessageBox.Show("structure relations file was not found");
+                System.Windows.MessageBox.Show("structure relations file was not found");
             }
 
             // Load the patient and structures from context
@@ -61,7 +63,7 @@ namespace VMS.TPS
             }
             else
             {
-                MessageBox.Show("Loaded " + structure_rels.Count() + " Structure Relations from Json File");
+                System.Windows.MessageBox.Show("Loaded " + structure_rels.Count() + " Structure Relations from Json File");
             }
             // sort the structure relationships to have anatomical first, then planning and lastly optimization
             var roleOrder = new Dictionary<string, int>
@@ -72,7 +74,8 @@ namespace VMS.TPS
                 {"Helper", 3}
             };
             var sorted_structure_rels = structure_rels.OrderBy(rel => roleOrder[rel.Role]).ToList();
-
+            ShowStructuresInDataGrid(sorted_structure_rels, structure_list);
+            /*
             // loop through each relation and create a new structure accordingly
             foreach (Structure_Relations relation in sorted_structure_rels)
             {
@@ -142,7 +145,7 @@ namespace VMS.TPS
                         if (relation.HighResolution.Value) { newStructure.ConvertToHighResolution(); }
                     }
                 }
-            }
+            }*/
         }
         public List<Structure> Get_structures_by_name(List<Structure> structure_list, List<String> name_list)
         {
@@ -154,7 +157,7 @@ namespace VMS.TPS
         {
             foreach (Structure structure in structure_list)
             {
-                MessageBox.Show(structure.ToString());
+                System.Windows.MessageBox.Show(structure.ToString());
             }
 
         }
@@ -168,5 +171,58 @@ namespace VMS.TPS
             public List<string>? Subtract { get; set; }
             public string? Comment { get; set; }
         }
+
+        // Method to show the data grid with your structure info
+        void ShowStructuresInDataGrid(List<Structure_Relations> sorted_structure_rels, List<Structure> structure_list)
+        {
+                // Gather query names and roles
+                List<string> allQueryStructures = new List<string>();
+                List<string> allRoles = new List<string>();
+                foreach (Structure_Relations relation in sorted_structure_rels)
+                {
+                    allQueryStructures.Add(relation.Name);
+                    allRoles.Add(relation.Role);
+                }
+
+                // Query all at once
+                List<Structure> structures_found = Get_structures_by_name(structure_list, allQueryStructures);
+                HashSet<string> foundNames = structures_found.Select(s => s.Id).ToHashSet();
+
+                // Create DataTable to hold info for DataGridView
+                DataTable table = new DataTable();
+                table.Columns.Add("Role", typeof(string));
+                table.Columns.Add("Query Structure Name", typeof(string));
+                table.Columns.Add("Found in Plan", typeof(string));
+
+                // Populate the DataTable rows
+                for (int i = 0; i < allQueryStructures.Count; i++)
+                {
+                    bool found = foundNames.Contains(allQueryStructures[i]);
+                    table.Rows.Add(allRoles[i], allQueryStructures[i], found.ToString().ToLower());
+                }
+
+                // Create and configure a Form to show the DataGridView
+                Form form = new Form()
+                {
+                    Text = "Structure Query Results",
+                    Width = 600,
+                    Height = 400
+                };
+
+                DataGridView dgv = new DataGridView()
+                {
+                    DataSource = table,
+                    Dock = DockStyle.Fill,
+                    ReadOnly = true,
+                    AllowUserToAddRows = false,
+                    AllowUserToDeleteRows = false,
+                    AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill
+                };
+
+                form.Controls.Add(dgv);
+
+                form.ShowDialog();
     }
+
+}
 }
