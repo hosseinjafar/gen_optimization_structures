@@ -37,11 +37,11 @@ namespace VMS.TPS
         public void Execute(ScriptContext context /*,  System.Windows.Window window, ScriptEnvironment environment*/)
         {
             // TODO : Add here the code that is called when the script is launched from Eclipse.
-            string pth_structure_relations = "./Brain-HA-WBRT-Structures.json";
+            string pth_Structure_Relation = "./Brain-HA-WBRT-Structures.json";
 
-            if (File.Exists(pth_structure_relations))
+            if (File.Exists(pth_Structure_Relation))
             {
-                System.Windows.MessageBox.Show("structure relations file was found:\n" + pth_structure_relations);
+                System.Windows.MessageBox.Show("structure relations file was found:\n" + pth_Structure_Relation);
             }
             else
             {
@@ -54,13 +54,13 @@ namespace VMS.TPS
             List<Structure> structure_list = plan_structure_set.Structures.ToList();
 
             //Load structure relations from json file
-            string jsonString = File.ReadAllText(pth_structure_relations);
+            string jsonString = File.ReadAllText(pth_Structure_Relation);
             //var options = new JsonSerializerOptions { PropertyNameCaseInsensitive = true };
-            List<Structure_Relations> structure_rels = JsonConvert.DeserializeObject<List<Structure_Relations>>(jsonString);
+            List<Structure_Relation> structure_rels = JsonConvert.DeserializeObject<List<Structure_Relation>>(jsonString);
             if (structure_rels == null)
             {
                 throw new ArgumentNullException(
-                    "no structure relationships in " + pth_structure_relations
+                    "no structure relationships in " + pth_Structure_Relation
                     );
             }
             else
@@ -83,7 +83,7 @@ namespace VMS.TPS
             bool needsHighResolution = false;
 
             // loop through each relation and create a new structure accordingly
-            foreach (Structure_Relations relation in sorted_structure_rels)
+            foreach (Structure_Relation relation in sorted_structure_rels)
             {
                 // create a new structure to be added to the structure set
                 if (relation.Role == "Anatomical")
@@ -94,7 +94,7 @@ namespace VMS.TPS
                     if (structures_found == null)
                     {
                         throw new ArgumentNullException(
-                            "no structure " + relation.Name + "was found in" + pth_structure_relations
+                            "no structure " + relation.Name + "was found in" + pth_Structure_Relation
                             );
                     }
                     // System.Windows.MessageBox.Show("found anatomical structure:" + relation.Name);
@@ -151,6 +151,10 @@ namespace VMS.TPS
                 }
             }
         }
+
+        //public void MakeNewStructure()
+
+
         public List<Structure> Get_structures_by_name(List<Structure> structure_list, List<String> name_list)
         {
             HashSet<string> nameSet = new HashSet<string>(name_list);
@@ -165,7 +169,7 @@ namespace VMS.TPS
             }
 
         }
-        public class Structure_Relations
+        public class Structure_Relation
         {
             public string? Name { get; set; }
             public string? Role { get; set; }
@@ -177,12 +181,12 @@ namespace VMS.TPS
         }
 
         // Method to show the data grid with your structure info
-        void ShowStructuresInDataGrid(List<Structure_Relations> sorted_structure_rels, List<Structure> structure_list)
+        void ShowStructuresInDataGrid(List<Structure_Relation> sorted_structure_rels, List<Structure> structure_list)
         {
                 // Gather query names and roles
                 List<string> allQueryStructures = new List<string>();
                 List<string> allRoles = new List<string>();
-                foreach (Structure_Relations relation in sorted_structure_rels)
+                foreach (Structure_Relation relation in sorted_structure_rels)
                 {
                     allQueryStructures.Add(relation.Name);
                     allRoles.Add(relation.Role);
