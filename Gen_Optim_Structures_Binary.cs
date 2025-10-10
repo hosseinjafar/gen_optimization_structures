@@ -113,17 +113,16 @@ namespace VMS.TPS
                     {
                         testStructure.SegmentVolume = testStructure.SegmentVolume.Or(testParent.SegmentVolume);
                     }
+                    // add margine (positve -> towards outside the body, negative -> towards inside the body)
+                    testStructure.SegmentVolume = testStructure.SegmentVolume.Margin(7);
 
                     // test subtracting
                     List<Structure> subtract_structures = Get_structures_by_name(structure_list, ["Optic Chiasm"]);
-                    needsHighResolution = subtract_structures.Any( s => s.IsHighResolution);
+                    needsHighResolution = subtract_structures.Any(s => s.IsHighResolution);
                     foreach (Structure subtractStructure in subtract_structures)
                     {
                         testStructure.SegmentVolume = testStructure.SegmentVolume.Sub(subtractStructure.SegmentVolume);
                     }
-
-                    // add margine (positve -> towards outside the body, negative -> towards inside the body)
-                    testStructure.SegmentVolume = testStructure.SegmentVolume.Margin(7);
 
                     break;
                     //}
