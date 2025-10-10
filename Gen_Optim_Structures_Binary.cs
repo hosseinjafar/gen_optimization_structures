@@ -101,7 +101,7 @@ namespace VMS.TPS
                 {
                     // for debugging{
                     Structure testStructure = plan_structure_set.AddStructure("Organ", "test_gen_struct");
-                    List<Structure> parent_structures = Get_structures_by_name(structure_list, ["CTV_30", "Spinal Cord"]);
+                    List<Structure> parent_structures = Get_structures_by_name(structure_list, ["Brain", "Spinal Cord"]);
                     // Check if any of the source structures are high resolution
                     bool needsHighResolution = parent_structures.Any(s => s.IsHighResolution);
                     // Convert new structure to high resolution if needed
@@ -113,16 +113,38 @@ namespace VMS.TPS
                     {
                         testStructure.SegmentVolume = testStructure.SegmentVolume.Or(testParent.SegmentVolume);
                     }
+
+                    // test subtracting
+                    List<Structure> subtract_structures = Get_structures_by_name(structure_list, ["Optic Chiasm"]);
+                    needsHighResolution = subtract_structures.Any( s => s.IsHighResolution);
+                    foreach (Structure subtractStructure in subtract_structures)
+                    {
+                        testStructure.SegmentVolume = testStructure.SegmentVolume.Sub(subtractStructure.SegmentVolume);
+                    }
+
+                    // add margine (positve -> towards outside the body, negative -> towards inside the body)
+                    testStructure.SegmentVolume = testStructure.SegmentVolume.Margin(7);
+
                     break;
                     //}
                     Structure newStructure = plan_structure_set.AddStructure("Organ", relation.Name);
                     if (relation.Parents != null)
                     {
+                        // Check if any of the source structures are high resolution
+                        /*bool*/ needsHighResolution = parent_structures.Any(s => s.IsHighResolution);
+                        if (needsHighResolution)
+                        {
+                            newStructure.ConvertToHighResolution();
+                        }
                         //get parent structure from context; apply union
                         List<Structure> parents_in_plan = Get_structures_by_name(structure_list, relation.Parents);
                         foreach (Structure parent in parents_in_plan)
                         {
-                            newStructure.Or(parent);
+                            if (needsHighResolution)
+                            {
+                                parent.ConvertToHighResolution();
+                            }
+                            newStructure.SegmentVolume = newStructure.SegmentVolume.Or(parent.SegmentVolume);
                         }
                     }
                     // get subtract structures from context; apply subtraction
