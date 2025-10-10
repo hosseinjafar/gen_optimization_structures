@@ -1,0 +1,56 @@
+[
+  {
+    "Name": "Brain",
+    "Role": "Anatomical",
+    "Margin": 0.0,
+    "Parents": null,
+    "HighResolution": null,
+    "Subtract": null,
+    "Comment": null
+  },
+  {
+    "Name": "Optic Chiasm",
+    "Role": "Anatomical",
+    "Margin": 0.0,
+    "Parents": null,
+    "HighResolution": null,
+    "Subtract": null,
+    "Comment": null
+  },
+  {
+    "Name": "Spinal Cord",
+    "Role": "Anatomical",
+    "Margin": 0.0,
+    "Parents": null,
+    "HighResolution": null,
+    "Subtract": null,
+    "Comment": null
+  },
+  {
+    "Name": "Test_Structure2",
+    "Role": "Planning",
+    "Margin": null,
+    "Parents": [
+      "Test_Structure1"
+    ],
+    "HighResolution": false,
+    "Subtract": [
+      "Spinal Cord"
+    ],
+    "Comment": null
+  },
+  {
+    "Name": "Test_Structure1",
+    "Role": "Planning",
+    "Margin": 7.0,
+    "Parents": [
+      "Brain",
+      "Spinal Cord"
+    ],
+    "HighResolution": false,
+    "Subtract": [
+      "Optic Chiasm"
+    ],
+    "Comment": null
+  }
+]
