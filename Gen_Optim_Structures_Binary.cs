@@ -14,6 +14,7 @@ using static VMS.TPS.Script;
 using System.Windows.Forms;
 using System.Windows.Documents.DocumentStructures;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement.TextBox;
+using System.Numerics;
 
 #nullable enable
 
@@ -76,6 +77,7 @@ namespace VMS.TPS
                 {"Helper", 3}
             };
             var sorted_structure_rels = structure_rels.OrderBy(rel => roleOrder[rel.Role]).ToList();
+            sorted_structure_rels = TopologicalSort(sorted_structure_rels);
             ShowStructuresInDataGrid(sorted_structure_rels, structure_list);
 
             // loop through each relation and create a new structure accordingly
@@ -108,7 +110,7 @@ namespace VMS.TPS
         /*
          * Purpose: To create a new structure based on structure relation from json
          * and add it to the patient's plan structure set.
-         * this function assumes that the parents of a new structure already exist
+         * this function assumes that the parents of a new structure already exist. 
          * Inputs:
          * - relation := a structure relation from which a new structure is built.
          * - plan_structure_set := The structure set in the treatment plan.
@@ -119,7 +121,13 @@ namespace VMS.TPS
         public void MakeNewStructure(Structure_Relation relation, StructureSet plan_structure_set)
         {
             List<Structure> structure_list = plan_structure_set.Structures.ToList();
+            bool structureExists = structure_list.Any(s => s.Name == relation.Name);
+            if (structureExists)
+            {
+                return;
+            }
             Structure newStructure = plan_structure_set.AddStructure("Organ", relation.Name);
+
             // depending on the parent or subtraction structures, we need to set the resolution
             // volume operations are only allowed for structures with the same resolution.
             bool needsHighResolution = false;
@@ -163,7 +171,10 @@ namespace VMS.TPS
             }
             if (relation.HighResolution != null)
             {
-                if (relation.HighResolution.Value) { newStructure.ConvertToHighResolution(); }
+                if (relation.HighResolution.Value & newStructure.CanConvertToHighResolution())
+                {
+                    newStructure.ConvertToHighResolution();
+                }
             }
         }
 
@@ -243,7 +254,59 @@ namespace VMS.TPS
                 form.Controls.Add(dgv);
 
                 form.ShowDialog();
-    }
+        }
+        /*
+         * Purpose: To sort the structure relations such that parents and subtract 
+         * structures always come before the child structure.
+         */
+        public List<Structure_Relation> TopologicalSort(List<Structure_Relation> items)
+        {
+            var lookup = items.ToDictionary(x => x.Name);
 
-}
+            var visited = new HashSet<string>();
+            var visiting = new HashSet<string>(); // Detect cycles
+            var sortedList = new List<Structure_Relation>();
+
+            void Dfs(string name)
+            {
+                if (visited.Contains(name))
+                    return;
+
+                if (visiting.Contains(name))
+                    throw new InvalidOperationException("Cycle detected in parent-child relationships");
+
+                visiting.Add(name);
+
+                if (lookup.TryGetValue(name, out var item))
+                {
+                    // Union of Parents and Subtract lists as combined parents
+                    var combinedParents = Enumerable.Empty<string>();
+                    if (item.Parents != null)
+                        combinedParents = combinedParents.Union(item.Parents);
+                    if (item.Subtract != null)
+                        combinedParents = combinedParents.Union(item.Subtract);
+
+                    foreach (var parentName in combinedParents)
+                    {
+                        if (!string.IsNullOrWhiteSpace(parentName))
+                            Dfs(parentName);
+                    }
+                }
+
+                visiting.Remove(name);
+                visited.Add(name);
+
+                if (lookup.TryGetValue(name, out var node))
+                    sortedList.Add(node);
+            }
+
+            foreach (var item in items)
+            {
+                if (!visited.Contains(item.Name))
+                    Dfs(item.Name);
+            }
+
+            return sortedList;
+        }
+    }
 }
