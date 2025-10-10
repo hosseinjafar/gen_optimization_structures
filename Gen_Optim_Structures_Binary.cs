@@ -105,33 +105,6 @@ namespace VMS.TPS
                 }
                 else if (relation.Role == "Planning" || relation.Role == "Optimization")
                 {
-                    /*/ for debugging{
-                    Structure testStructure = plan_structure_set.AddStructure("Organ", "test_gen_struct");
-                    List<Structure> parent_structures = Get_structures_by_name(structure_list, ["Brain", "Spinal Cord"]);
-                    // Check if any of the source structures are high resolution
-                    needsHighResolution = parent_structures.Any(s => s.IsHighResolution);
-                    // Convert new structure to high resolution if needed
-                    if (needsHighResolution)
-                    {
-                        testStructure.ConvertToHighResolution();
-                    }
-                    foreach (Structure testParent in parent_structures)
-                    {
-                        testStructure.SegmentVolume = testStructure.SegmentVolume.Or(testParent.SegmentVolume);
-                    }
-                    // add margine (positve -> towards outside the body, negative -> towards inside the body)
-                    testStructure.SegmentVolume = testStructure.SegmentVolume.Margin(7);
-
-                    // test subtracting
-                    List<Structure> subtract_structures = Get_structures_by_name(structure_list, ["Optic Chiasm"]);
-                    needsHighResolution = subtract_structures.Any(s => s.IsHighResolution);
-                    foreach (Structure subtractStructure in subtract_structures)
-                    {
-                        testStructure.SegmentVolume = testStructure.SegmentVolume.Sub(subtractStructure.SegmentVolume);
-                    }
-
-                    break;
-                    //}*/
                     Structure newStructure = plan_structure_set.AddStructure("Organ", relation.Name);
                     if (relation.Parents != null)
                     {
