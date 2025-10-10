@@ -78,10 +78,6 @@ namespace VMS.TPS
             var sorted_structure_rels = structure_rels.OrderBy(rel => roleOrder[rel.Role]).ToList();
             ShowStructuresInDataGrid(sorted_structure_rels, structure_list);
 
-            // depending on the parent or subtraction structures, we need to set the resolution
-            // volume operations are only allowed for structures with the same resolution.
-            bool needsHighResolution = false;
-
             // loop through each relation and create a new structure accordingly
             foreach (Structure_Relation relation in sorted_structure_rels)
             {
@@ -105,54 +101,71 @@ namespace VMS.TPS
                 }
                 else if (relation.Role == "Planning" || relation.Role == "Optimization")
                 {
-                    Structure newStructure = plan_structure_set.AddStructure("Organ", relation.Name);
-                    if (relation.Parents != null)
-                    {
-                        List<Structure> parent_structures = Get_structures_by_name(structure_list, relation.Parents);
-                        // Check if any of the source structures are high resolution
-                        needsHighResolution = parent_structures.Any(s => s.IsHighResolution);
-                        if (needsHighResolution)
-                        {
-                            newStructure.ConvertToHighResolution();
-                        }
-                        //get parent structure from context; apply union
-                        List<Structure> parents_in_plan = Get_structures_by_name(structure_list, relation.Parents);
-                        foreach (Structure parent in parents_in_plan)
-                        {
-                            if (needsHighResolution)
-                            {
-                                parent.ConvertToHighResolution();
-                            }
-                            newStructure.SegmentVolume = newStructure.SegmentVolume.Or(parent.SegmentVolume);
-                        }
-                    }
-                    if (relation.Margin != null)
-                    {
-                        newStructure.SegmentVolume = newStructure.SegmentVolume.Margin(relation.Margin.Value);
-                    }
-                    // get subtract structures from context; apply subtraction
-                    if (relation.Subtract != null)
-                    {
-                        List<Structure> subtract_structures = Get_structures_by_name(structure_list, relation.Subtract);
-                        needsHighResolution = subtract_structures.Any(s => s.IsHighResolution);
-                        foreach (Structure subtractStructure in subtract_structures)
-                        {
-                            if (needsHighResolution)
-                            {
-                                subtractStructure.ConvertToHighResolution();
-                            }
-                            newStructure.SegmentVolume = newStructure.SegmentVolume.Sub(subtractStructure.SegmentVolume);
-                        }
-                    }
-                    if (relation.HighResolution != null)
-                    {
-                        if (relation.HighResolution.Value) { newStructure.ConvertToHighResolution(); }
-                    }
+                    MakeNewStructure(relation, plan_structure_set);
                 }
             }
         }
-
-        //public void MakeNewStructure()
+        /*
+         * Purpose: To create a new structure based on structure relation from json
+         * and add it to the patient's plan structure set.
+         * this function assumes that the parents of a new structure already exist
+         * Inputs:
+         * - relation := a structure relation from which a new structure is built.
+         * - plan_structure_set := The structure set in the treatment plan.
+         * Output:
+         * - None := a new structure created based on the parent structures, margine, cutout 
+         * structures, and resolution and added to the structure set.
+        */
+        public void MakeNewStructure(Structure_Relation relation, StructureSet plan_structure_set)
+        {
+            List<Structure> structure_list = plan_structure_set.Structures.ToList();
+            Structure newStructure = plan_structure_set.AddStructure("Organ", relation.Name);
+            // depending on the parent or subtraction structures, we need to set the resolution
+            // volume operations are only allowed for structures with the same resolution.
+            bool needsHighResolution = false;
+            if (relation.Parents != null)
+            {
+                List<Structure> parent_structures = Get_structures_by_name(structure_list, relation.Parents);
+                // Check if any of the source structures are high resolution
+                needsHighResolution = parent_structures.Any(s => s.IsHighResolution);
+                if (needsHighResolution)
+                {
+                    newStructure.ConvertToHighResolution();
+                }
+                //get parent structure from context; apply union
+                List<Structure> parents_in_plan = Get_structures_by_name(structure_list, relation.Parents);
+                foreach (Structure parent in parents_in_plan)
+                {
+                    if (needsHighResolution)
+                    {
+                        parent.ConvertToHighResolution();
+                    }
+                    newStructure.SegmentVolume = newStructure.SegmentVolume.Or(parent.SegmentVolume);
+                }
+            }
+            if (relation.Margin != null)
+            {
+                newStructure.SegmentVolume = newStructure.SegmentVolume.Margin(relation.Margin.Value);
+            }
+            // get subtract structures from context; apply subtraction
+            if (relation.Subtract != null)
+            {
+                List<Structure> subtract_structures = Get_structures_by_name(structure_list, relation.Subtract);
+                needsHighResolution = subtract_structures.Any(s => s.IsHighResolution);
+                foreach (Structure subtractStructure in subtract_structures)
+                {
+                    if (needsHighResolution)
+                    {
+                        subtractStructure.ConvertToHighResolution();
+                    }
+                    newStructure.SegmentVolume = newStructure.SegmentVolume.Sub(subtractStructure.SegmentVolume);
+                }
+            }
+            if (relation.HighResolution != null)
+            {
+                if (relation.HighResolution.Value) { newStructure.ConvertToHighResolution(); }
+            }
+        }
 
 
         public List<Structure> Get_structures_by_name(List<Structure> structure_list, List<String> name_list)
