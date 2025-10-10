@@ -12,6 +12,8 @@ using System.IO;
 using System.Data;
 using static VMS.TPS.Script;
 using System.Windows.Forms;
+using System.Windows.Documents.DocumentStructures;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement.TextBox;
 
 #nullable enable
 
@@ -76,6 +78,10 @@ namespace VMS.TPS
             var sorted_structure_rels = structure_rels.OrderBy(rel => roleOrder[rel.Role]).ToList();
             ShowStructuresInDataGrid(sorted_structure_rels, structure_list);
 
+            // depending on the parent or subtraction structures, we need to set the resolution
+            // volume operations are only allowed for structures with the same resolution.
+            bool needsHighResolution = false;
+
             // loop through each relation and create a new structure accordingly
             foreach (Structure_Relations relation in sorted_structure_rels)
             {
@@ -99,11 +105,11 @@ namespace VMS.TPS
                 }
                 else if (relation.Role == "Planning" || relation.Role == "Optimization")
                 {
-                    // for debugging{
+                    /*/ for debugging{
                     Structure testStructure = plan_structure_set.AddStructure("Organ", "test_gen_struct");
                     List<Structure> parent_structures = Get_structures_by_name(structure_list, ["Brain", "Spinal Cord"]);
                     // Check if any of the source structures are high resolution
-                    bool needsHighResolution = parent_structures.Any(s => s.IsHighResolution);
+                    needsHighResolution = parent_structures.Any(s => s.IsHighResolution);
                     // Convert new structure to high resolution if needed
                     if (needsHighResolution)
                     {
@@ -125,12 +131,13 @@ namespace VMS.TPS
                     }
 
                     break;
-                    //}
+                    //}*/
                     Structure newStructure = plan_structure_set.AddStructure("Organ", relation.Name);
                     if (relation.Parents != null)
                     {
+                        List<Structure> parent_structures = Get_structures_by_name(structure_list, relation.Parents);
                         // Check if any of the source structures are high resolution
-                        /*bool*/ needsHighResolution = parent_structures.Any(s => s.IsHighResolution);
+                        needsHighResolution = parent_structures.Any(s => s.IsHighResolution);
                         if (needsHighResolution)
                         {
                             newStructure.ConvertToHighResolution();
@@ -146,18 +153,23 @@ namespace VMS.TPS
                             newStructure.SegmentVolume = newStructure.SegmentVolume.Or(parent.SegmentVolume);
                         }
                     }
+                    if (relation.Margin != null)
+                    {
+                        newStructure.SegmentVolume = newStructure.SegmentVolume.Margin(relation.Margin.Value);
+                    }
                     // get subtract structures from context; apply subtraction
                     if (relation.Subtract != null)
                     {
-                        List<Structure> subtractions_in_plan = Get_structures_by_name(structure_list, relation.Subtract);
-                        foreach (Structure subtraction in subtractions_in_plan)
+                        List<Structure> subtract_structures = Get_structures_by_name(structure_list, relation.Subtract);
+                        needsHighResolution = subtract_structures.Any(s => s.IsHighResolution);
+                        foreach (Structure subtractStructure in subtract_structures)
                         {
-                            newStructure.Sub(subtraction);
+                            if (needsHighResolution)
+                            {
+                                subtractStructure.ConvertToHighResolution();
+                            }
+                            newStructure.SegmentVolume = newStructure.SegmentVolume.Sub(subtractStructure.SegmentVolume);
                         }
-                    }
-                    if (relation.Margin != null)
-                    {
-                        newStructure.Margin(relation.Margin.Value);
                     }
                     if (relation.HighResolution != null)
                     {
