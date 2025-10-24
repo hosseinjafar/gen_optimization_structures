@@ -219,32 +219,44 @@ namespace VMS.TPS
         // Method to show the data grid with your structure info
         void ShowStructuresInDataGrid(List<Structure_Relation> sorted_structure_rels, List<Structure> structure_list)
         {
-                // Gather query names and roles
-                List<string> allQueryStructures = new List<string>();
-                List<string> allRoles = new List<string>();
-                foreach (Structure_Relation relation in sorted_structure_rels)
-                {
-                    allQueryStructures.Add(relation.Name);
-                    allRoles.Add(relation.Role);
+            // Gather query names and roles
+            List<string> allQueryStructures = new List<string>();
+            List<string> allRoles = new List<string>();
+            foreach (Structure_Relation relation in sorted_structure_rels)
+            {
+                allQueryStructures.Add(relation.Name);
+                allRoles.Add(relation.Role);
+            }
+            // Query all at once
+            List<Structure> structures_found = Get_structures_by_name(structure_list, allQueryStructures);
+            HashSet<string> foundNames = structures_found.Select(s => s.Id).ToHashSet();
+            var structureResolutionMap = structures_found.ToDictionary(s => s.Id, s => s.IsHighResolution);
+
+            // Create DataTable to hold info for DataGridView
+            DataTable table = new DataTable();
+            table.Columns.Add("Role", typeof(string));
+            table.Columns.Add("Query Structure Name", typeof(string));
+            table.Columns.Add("Found in Plan", typeof(string));
+            table.Columns.Add("High Resolution", typeof(string));
+
+            // Populate the DataTable rows
+            for (int i = 0; i < allQueryStructures.Count; i++)
+            {
+                bool found = foundNames.Contains(allQueryStructures[i]);
+                String isHighres_str = "Not Applicable";
+                if (found) 
+                { 
+                    bool isHighres = structureResolutionMap[allQueryStructures[i]];
+                    if (isHighres) { isHighres_str = "true"; } else { isHighres_str = "false"; }
                 }
-
-                // Query all at once
-                List<Structure> structures_found = Get_structures_by_name(structure_list, allQueryStructures);
-                HashSet<string> foundNames = structures_found.Select(s => s.Id).ToHashSet();
-
-                // Create DataTable to hold info for DataGridView
-                DataTable table = new DataTable();
-                table.Columns.Add("Role", typeof(string));
-                table.Columns.Add("Query Structure Name", typeof(string));
-                table.Columns.Add("Is High Resolution", typeof (string));
-                table.Columns.Add("Found in Plan", typeof(string));
-
-                // Populate the DataTable rows
-                for (int i = 0; i < allQueryStructures.Count; i++)
-                {
-                    bool found = foundNames.Contains(allQueryStructures[i]);
-                    table.Rows.Add(allRoles[i], allQueryStructures[i], found.ToString().ToLower());
-                }
+                
+                table.Rows.Add(
+                    allRoles[i],
+                    allQueryStructures[i],
+                    found.ToString().ToLower(),
+                    isHighres_str
+                    );
+            }
 
                 // Create and configure a Form to show the DataGridView
                 Form form = new Form()
