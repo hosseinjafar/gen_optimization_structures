@@ -78,7 +78,6 @@ namespace VMS.TPS
             };
             var sorted_structure_rels = structure_rels.OrderBy(rel => roleOrder[rel.Role]).ToList();
             sorted_structure_rels = TopologicalSort(sorted_structure_rels);
-            ShowStructuresInDataGrid(sorted_structure_rels, structure_list);
 
             // loop through each relation and create a new structure accordingly
             foreach (Structure_Relation relation in sorted_structure_rels)
@@ -103,9 +102,17 @@ namespace VMS.TPS
                 }
                 else if (relation.Role == "Planning" || relation.Role == "Optimization")
                 {
-                    MakeNewStructure(relation, plan_structure_set);
+                    try
+                    {
+                        MakeNewStructure(relation, plan_structure_set);
+                    }
+                    catch (Exception e) {
+                        System.Windows.MessageBox.Show("Failed on structure " + relation.Name);
+                    }
+                    
                 }
             }
+            ShowStructuresInDataGrid(sorted_structure_rels, structure_list);
         }
         /*
          * Purpose: To create a new structure based on structure relation from json
@@ -144,7 +151,7 @@ namespace VMS.TPS
                 List<Structure> parents_in_plan = Get_structures_by_name(structure_list, relation.Parents);
                 foreach (Structure parent in parents_in_plan)
                 {
-                    if (needsHighResolution)
+                    if (needsHighResolution & parent.CanConvertToHighResolution())
                     {
                         parent.ConvertToHighResolution();
                     }
@@ -162,9 +169,13 @@ namespace VMS.TPS
                 needsHighResolution = subtract_structures.Any(s => s.IsHighResolution);
                 foreach (Structure subtractStructure in subtract_structures)
                 {
-                    if (needsHighResolution)
+                    if (needsHighResolution & subtractStructure.CanConvertToHighResolution())
                     {
                         subtractStructure.ConvertToHighResolution();
+                    }
+                    if (!subtractStructure.IsHighResolution & newStructure.IsHighResolution) {
+                        // XXX gotta figure out the resolution business!
+                        return;
                     }
                     newStructure.SegmentVolume = newStructure.SegmentVolume.Sub(subtractStructure.SegmentVolume);
                 }
