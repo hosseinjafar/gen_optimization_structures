@@ -77,7 +77,7 @@ namespace VMS.TPS
                 {"Helper", 3}
             };
             var sorted_structure_rels = structure_rels.OrderBy(rel => roleOrder[rel.Role]).ToList();
-            sorted_structure_rels = TopologicalSort(sorted_structure_rels);
+            sorted_structure_rels = ParentalSort(sorted_structure_rels);
 
             // loop through each relation and create a new structure accordingly
             foreach (Structure_Relation relation in sorted_structure_rels)
@@ -112,7 +112,8 @@ namespace VMS.TPS
                     
                 }
             }
-            ShowStructuresInDataGrid(sorted_structure_rels, structure_list);
+
+            ShowStructuresInDataGrid(sorted_structure_rels, plan_structure_set.Structures.ToList());
         }
         /*
          * Purpose: To create a new structure based on structure relation from json
@@ -235,6 +236,7 @@ namespace VMS.TPS
                 DataTable table = new DataTable();
                 table.Columns.Add("Role", typeof(string));
                 table.Columns.Add("Query Structure Name", typeof(string));
+                table.Columns.Add("Is High Resolution", typeof (string));
                 table.Columns.Add("Found in Plan", typeof(string));
 
                 // Populate the DataTable rows
@@ -270,7 +272,7 @@ namespace VMS.TPS
          * Purpose: To sort the structure relations such that parents and subtract 
          * structures always come before the child structure.
          */
-        public List<Structure_Relation> TopologicalSort(List<Structure_Relation> items)
+        public List<Structure_Relation> ParentalSort(List<Structure_Relation> items)
         {
             var lookup = items.ToDictionary(x => x.Name);
 
