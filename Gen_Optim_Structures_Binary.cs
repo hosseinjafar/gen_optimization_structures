@@ -40,7 +40,6 @@ namespace VMS.TPS
         public void Execute(ScriptContext context /*,  System.Windows.Window window, ScriptEnvironment environment*/)
         {
             // TODO : Add here the code that is called when the script is launched from Eclipse.
-            //string pth_Structure_Relation = "./Brain-HA-WBRT-Structures.json";
 
             string pth_Structure_Relation = getRelationsTemplate();
 
