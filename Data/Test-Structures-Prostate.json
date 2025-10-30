@@ -1,11 +1,128 @@
 [
   {
-    "Name": "Brain",
+    "Name": "Body",
     "Role": "Anatomical",
     "Margin": 0.0,
     "Parents": null,
     "HighResolution": null,
     "Subtract": null,
     "Comment": null
+  },
+  {
+    "Name": "PTV1_XGy",
+    "Role": "Anatomical",
+    "Margin": 0.0,
+    "Parents": null,
+    "HighResolution": null,
+    "Subtract": null,
+    "Comment": null
+  },
+  {
+    "Name": "PTV2_XGy",
+    "Role": "Anatomical",
+    "Margin": 0.0,
+    "Parents": null,
+    "HighResolution": null,
+    "Subtract": null,
+    "Comment": null
+  },
+  {
+    "Name": "PTV3_XGy",
+    "Role": "Anatomical",
+    "Margin": 0.0,
+    "Parents": null,
+    "HighResolution": null,
+    "Subtract": null,
+    "Comment": null
+  },
+  {
+    "Name": "PTV4_XGy",
+    "Role": "Anatomical",
+    "Margin": 0.0,
+    "Parents": null,
+    "HighResolution": null,
+    "Subtract": null,
+    "Comment": "May not be present all the time."
+  },
+  {
+    "Name": "PTV_LN_XGy",
+    "Role": "Anatomical",
+    "Margin": 0.0,
+    "Parents": null,
+    "HighResolution": null,
+    "Subtract": null,
+    "Comment": "May not be present all the time."
+  },
+  {
+    "Name": "PTVS",
+    "Role": "Planning",
+    "Margin": 0.0,
+    "Parents": [
+      "PTV1_XGy", "PTV_LN_XGy"
+    ],
+    "HighResolution": null,
+    "Subtract": null,
+    "Comment": null
+  },
+  {
+    "Name": "NonPTV",
+    "Role": "Planning",
+    "Margin": 0.0,
+    "Parents": [
+      "Body"
+    ],
+    "HighResolution": null,
+    "Subtract": [
+      "PTV1_XGy", "PTV2_XGy", "PTV3_XGy",
+      "PTV4_XGy", "PTV_LN_XGy"
+    ],
+    "Comment": null
+  },
+  {
+    "Name": "ScanVolume",
+    "Role": "Planning",
+    "Margin": 0.0,
+    "Parents": null,
+    "HighResolution": null,
+    "Subtract": null,
+    "Comment": "The mask where the scan volume is 1."
+  },
+  {
+    "Name": "NonBody",
+    "Role": "Planning",
+    "Margin": 0.0,
+    "Parents": [
+      "ScanVolume"
+    ],
+    "HighResolution": null,
+    "Subtract": [
+      "Body"
+    ]
+  },
+  {
+    "Name": "OptNonPTV",
+    "Role": "Optimization",
+    "Margin": 30.0,
+    "Parents": [
+      "PTV1_XGy", "PTV2_XGy", "PTV3_XGy",
+      "PTV4_XGy", "PTV_LN_XGy"
+    ],
+    "HighResolution": null,
+    "Subtract": [
+      "PTV1_XGy", "PTV2_XGy", "PTV3_XGy",
+       "PTV4_XGy", "PTV_LN_XGy", "NonBody"
+    ],
+    "Comment": "The ring surrounding the PTVs."
+  },
+  {
+    "Name":"XXX",
+    "Role": "Optimization",
+    "Margin":5.0,
+    "Parents":[
+      "Body"
+    ],
+    "HighResolution":null,
+    "Subtract":null,
+    "Comment":null
   }
 ]
