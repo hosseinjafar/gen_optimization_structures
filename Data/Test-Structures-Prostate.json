@@ -27,7 +27,8 @@
     "HighResolution": null,
     "Subtract": [
       "Body"
-    ]
+    ],
+    "Comment": "Not body operation on esapi may be better?"
   },
   {
     "Name": "PTV1_XGy",
@@ -86,7 +87,7 @@
     "Comment": null
   },
   {
-    "Name": "NonPTV",
+    "Name": "NonPTVS_XGy",
     "Role": "Planning",
     "Margin": 0.0,
     "Parents": [
@@ -94,18 +95,88 @@
     ],
     "HighResolution": null,
     "Subtract": [
-      "PTV1_XGy", "PTV2_XGy", "PTV3_XGy",
-      "PTV4_XGy", "PTV_LN_XGy"
+      "PTVS"
     ],
     "Comment": null
   },
   {
-    "Name": "PTV+5mm",
+    "Name": "NonPTV2_XGy",
+    "Role": "Planning",
+    "Margin": 0.0,
+    "Parents": [
+      "Body"
+    ],
+    "HighResolution": null,
+    "Subtract": [
+      "PTV2_XGy"
+    ],
+    "Comment": null
+  },
+  {
+    "Name": "NonPTV3_XGy",
+    "Role": "Planning",
+    "Margin": 0.0,
+    "Parents": [
+      "Body"
+    ],
+    "HighResolution": null,
+    "Subtract": [
+     "PTV3_XGy"
+    ],
+    "Comment": null
+  },
+  {
+    "Name": "NonPTV4_XGy",
+    "Role": "Planning",
+    "Margin": 0.0,
+    "Parents": [
+      "Body"
+    ],
+    "HighResolution": null,
+    "Subtract": [
+      "PTV4_XGy"
+    ],
+    "Comment": null
+  },
+  {
+    "Name": "PTVS+5mm",
     "Role": "Planning",
     "Margin": 5.0,
     "Parents": [
-      "PTV1_XGy", "PTV2_XGy", "PTV3_XGy",
-      "PTV4_XGy", "PTV_LN_XGy"
+      "PTVS"
+    ],
+    "HighResolution": null,
+    "Subtract": null,
+    "Comment": null
+  },
+  {
+    "Name": "PTV_2+5mm",
+    "Role": "Planning",
+    "Margin": 5.0,
+    "Parents": [
+      "PTV2_XGy"
+    ],
+    "HighResolution": null,
+    "Subtract": null,
+    "Comment": null
+  },
+  {
+    "Name": "PTV3+5mm",
+    "Role": "Planning",
+    "Margin": 5.0,
+    "Parents": [
+      "PTV3_XGy"
+    ],
+    "HighResolution": null,
+    "Subtract": null,
+    "Comment": null
+  },
+  {
+    "Name": "PTV4+5mm",
+    "Role": "Planning",
+    "Margin": 5.0,
+    "Parents": [
+      "PTV4_XGy"
     ],
     "HighResolution": null,
     "Subtract": null,
