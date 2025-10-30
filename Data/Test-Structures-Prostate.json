@@ -129,7 +129,7 @@
   {
     "Name":"Body-(PTVs+5mm)",
     "Role": "Optimization",
-    "Margin":5.0,
+    "Margin":0.0,
     "Parents": [
       "OptNonPTV"
       ],
