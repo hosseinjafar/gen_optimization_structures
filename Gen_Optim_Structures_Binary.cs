@@ -15,6 +15,7 @@ using System.Windows.Forms;
 using System.Windows.Documents.DocumentStructures;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement.TextBox;
 using System.Numerics;
+using System.Windows.Media;
 
 #nullable enable
 
@@ -258,25 +259,46 @@ namespace VMS.TPS
                     );
             }
 
-                // Create and configure a Form to show the DataGridView
-                Form form = new Form()
-                {
-                    Text = "Structure Query Results",
-                    Width = 600,
-                    Height = 400
-                };
+            // Create and configure a Form to show the DataGridView
+            Form form = new Form()
+            {
+                Text = "Structure Query Results",
+                Width = 600,
+                Height = 400
+            };
+            DataGridView dgv = new DataGridView()
+            {
+                DataSource = table,
+                Dock = DockStyle.Fill,
+                ReadOnly = true,
+                AllowUserToAddRows = false,
+                AllowUserToDeleteRows = false,
+                AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill
+            };
+            /*
+            // CellFormatting event for coloring both columns
+            dgv.CellFormatting += (sender, e) =>
+            {
+                if (e.Value == null) return;
+                string text = e.Value.ToString().Trim().ToLower();
 
-                DataGridView dgv = new DataGridView()
+                // High Resolution column
+                if (dgv.Columns[e.ColumnIndex].Name == "High Resolution")
                 {
-                    DataSource = table,
-                    Dock = DockStyle.Fill,
-                    ReadOnly = true,
-                    AllowUserToAddRows = false,
-                    AllowUserToDeleteRows = false,
-                    AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill
-                };
+                    if (text == "true") e.CellStyle.ForeColor = Color.Green;
+                    else if (text == "false") e.CellStyle.ForeColor = Color.Red;
+                    else if (text == "not applicable") e.CellStyle.ForeColor = Color.Blue;
+                }
 
-                form.Controls.Add(dgv);
+                // Found in Plan column
+                if (dgv.Columns[e.ColumnIndex].Name == "Found in Plan")
+                {
+                    if (text == "true") e.CellStyle.ForeColor = Color.Green;
+                    else if (text == "false") e.CellStyle.ForeColor = Color.Red;
+                }
+            };
+            */
+            form.Controls.Add(dgv);
 
                 form.ShowDialog();
         }
