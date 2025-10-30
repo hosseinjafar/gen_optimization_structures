@@ -115,14 +115,18 @@
     "Comment": "The ring surrounding the PTVs."
   },
   {
-    "Name":"XXX",
+    "Name":"Body-(PTVs+5mm)",
     "Role": "Optimization",
     "Margin":5.0,
-    "Parents":[
-      "Body"
+    "Parents": [
+      "PTV1_XGy", "PTV2_XGy", "PTV3_XGy",
+      "PTV4_XGy", "PTV_LN_XGy"
     ],
-    "HighResolution":null,
-    "Subtract":null,
-    "Comment":null
+    "HighResolution": null,
+    "Subtract": [
+      "PTV1_XGy", "PTV2_XGy", "PTV3_XGy",
+       "PTV4_XGy", "PTV_LN_XGy", "NonBody"
+    ],
+    "Comment":"The body excluding a 5mm margin around the PTVs."
   }
 ]
