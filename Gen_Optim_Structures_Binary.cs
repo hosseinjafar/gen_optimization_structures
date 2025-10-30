@@ -16,6 +16,7 @@ using System.Windows.Documents.DocumentStructures;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement.TextBox;
 using System.Numerics;
 using System.Windows.Media;
+using System.Windows.Forms;
 
 #nullable enable
 
@@ -39,7 +40,9 @@ namespace VMS.TPS
         public void Execute(ScriptContext context /*,  System.Windows.Window window, ScriptEnvironment environment*/)
         {
             // TODO : Add here the code that is called when the script is launched from Eclipse.
-            string pth_Structure_Relation = "./Brain-HA-WBRT-Structures.json";
+            //string pth_Structure_Relation = "./Brain-HA-WBRT-Structures.json";
+
+            string pth_Structure_Relation = getRelationsTemplate();
 
             if (File.Exists(pth_Structure_Relation))
             {
@@ -116,6 +119,34 @@ namespace VMS.TPS
 
             ShowStructuresInDataGrid(sorted_structure_rels, plan_structure_set.Structures.ToList());
         }
+        
+        /*
+         * Purpose:
+         *  Opens a navigation window to allow the user to select a 
+         *  template structure relations json file.
+         */
+        public string getRelationsTemplate()
+        {
+            string templatePath = "";
+
+            OpenFileDialog openFileDialog = new OpenFileDialog();
+            openFileDialog.Filter = "JSON files (*.json)|*.json|All files (*.*)|*.*";
+            openFileDialog.Title = "Select Template JSON File";
+            openFileDialog.InitialDirectory = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
+
+            if (openFileDialog.ShowDialog() == DialogResult.OK)
+            {
+                templatePath = openFileDialog.FileName;
+                // Use templatePath as your template file
+                return templatePath;
+            }
+            else
+            {
+                // Handle cancel or no selection
+                return "File not found!";
+            }
+        }
+
         /*
          * Purpose: To create a new structure based on structure relation from json
          * and add it to the patient's plan structure set.
@@ -191,7 +222,6 @@ namespace VMS.TPS
             }
         }
 
-
         public List<Structure> Get_structures_by_name(List<Structure> structure_list, List<String> name_list)
         {
             HashSet<string> nameSet = new HashSet<string>(name_list);
@@ -239,6 +269,7 @@ namespace VMS.TPS
             table.Columns.Add("Query Structure Name", typeof(string));
             table.Columns.Add("Found in Plan", typeof(string));
             table.Columns.Add("High Resolution", typeof(string));
+            // XXX maybe add volume after
 
             // Populate the DataTable rows
             for (int i = 0; i < allQueryStructures.Count; i++)
