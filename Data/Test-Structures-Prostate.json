@@ -1,4 +1,13 @@
 [
+    {
+    "Name": "ScanVolume",
+    "Role": "Planning",
+    "Margin": 0.0,
+    "Parents": null,
+    "HighResolution": null,
+    "Subtract": null,
+    "Comment": "The mask where the entire scan volume is 1."
+  },
   {
     "Name": "Body",
     "Role": "Anatomical",
@@ -7,6 +16,18 @@
     "HighResolution": null,
     "Subtract": null,
     "Comment": null
+  },
+  {
+    "Name": "NonBody",
+    "Role": "Planning",
+    "Margin": 0.0,
+    "Parents": [
+      "ScanVolume"
+    ],
+    "HighResolution": null,
+    "Subtract": [
+      "Body"
+    ]
   },
   {
     "Name": "PTV1_XGy",
@@ -77,27 +98,6 @@
       "PTV4_XGy", "PTV_LN_XGy"
     ],
     "Comment": null
-  },
-  {
-    "Name": "ScanVolume",
-    "Role": "Planning",
-    "Margin": 0.0,
-    "Parents": null,
-    "HighResolution": null,
-    "Subtract": null,
-    "Comment": "The mask where the scan volume is 1."
-  },
-  {
-    "Name": "NonBody",
-    "Role": "Planning",
-    "Margin": 0.0,
-    "Parents": [
-      "ScanVolume"
-    ],
-    "HighResolution": null,
-    "Subtract": [
-      "Body"
-    ]
   },
   {
     "Name": "OptNonPTV",
