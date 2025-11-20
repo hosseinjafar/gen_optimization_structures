@@ -31,7 +31,7 @@
     "Comment": "Not body operation on esapi may be better?"
   },
   {
-    "Name": "PTV1_XGy",
+    "Name": "PTV1_46Gy",
     "Role": "Anatomical",
     "Margin": 0.0,
     "Parents": null,
@@ -40,7 +40,16 @@
     "Comment": null
   },
   {
-    "Name": "PTV2_XGy",
+    "Name": "PTV_LN_46Gy",
+    "Role": "Anatomical",
+    "Margin": 0.0,
+    "Parents": null,
+    "HighResolution": null,
+    "Subtract": null,
+    "Comment": "May not be present all the time."
+  },
+  {
+    "Name": "PTV2_8Gy",
     "Role": "Anatomical",
     "Margin": 0.0,
     "Parents": null,
@@ -49,7 +58,7 @@
     "Comment": null
   },
   {
-    "Name": "PTV3_XGy",
+    "Name": "PTV3_22Gy",
     "Role": "Anatomical",
     "Margin": 0.0,
     "Parents": null,
@@ -67,27 +76,18 @@
     "Comment": "May not be present all the time."
   },
   {
-    "Name": "PTV_LN_XGy",
-    "Role": "Anatomical",
-    "Margin": 0.0,
-    "Parents": null,
-    "HighResolution": null,
-    "Subtract": null,
-    "Comment": "May not be present all the time."
-  },
-  {
-    "Name": "PTVS",
+    "Name": "PTVs_X",
     "Role": "Planning",
     "Margin": 0.0,
     "Parents": [
-      "PTV1_XGy", "PTV_LN_XGy"
+      "PTV1_46Gy", "PTV_LN_46Gy"
     ],
     "HighResolution": null,
     "Subtract": null,
     "Comment": null
   },
   {
-    "Name": "NonPTVS_XGy",
+    "Name": "NonPTV1_X",
     "Role": "Planning",
     "Margin": 0.0,
     "Parents": [
@@ -95,12 +95,12 @@
     ],
     "HighResolution": null,
     "Subtract": [
-      "PTVS"
+      "PTVs_X"
     ],
     "Comment": null
   },
   {
-    "Name": "NonPTV2_XGy",
+    "Name": "NonPTV2",
     "Role": "Planning",
     "Margin": 0.0,
     "Parents": [
@@ -108,12 +108,12 @@
     ],
     "HighResolution": null,
     "Subtract": [
-      "PTV2_XGy"
+      "PTV2_8Gy"
     ],
     "Comment": null
   },
   {
-    "Name": "NonPTV3_XGy",
+    "Name": "NonPTV3",
     "Role": "Planning",
     "Margin": 0.0,
     "Parents": [
@@ -121,12 +121,12 @@
     ],
     "HighResolution": null,
     "Subtract": [
-     "PTV3_XGy"
+     "PTV3_22Gy"
     ],
     "Comment": null
   },
   {
-    "Name": "NonPTV4_XGy",
+    "Name": "NonPTV4",
     "Role": "Planning",
     "Margin": 0.0,
     "Parents": [
@@ -139,74 +139,39 @@
     "Comment": null
   },
   {
-    "Name": "PTVS+5mm",
-    "Role": "Planning",
+    "Name": "PTVs_X+5mm",
+    "Role": "Helping",
     "Margin": 5.0,
     "Parents": [
-      "PTVS"
+      "PTVs_X"
     ],
     "HighResolution": null,
     "Subtract": null,
     "Comment": null
   },
   {
-    "Name": "PTV_2+5mm",
-    "Role": "Planning",
-    "Margin": 5.0,
-    "Parents": [
-      "PTV2_XGy"
-    ],
-    "HighResolution": null,
-    "Subtract": null,
-    "Comment": null
-  },
-  {
-    "Name": "PTV3+5mm",
-    "Role": "Planning",
-    "Margin": 5.0,
-    "Parents": [
-      "PTV3_XGy"
-    ],
-    "HighResolution": null,
-    "Subtract": null,
-    "Comment": null
-  },
-  {
-    "Name": "PTV4+5mm",
-    "Role": "Planning",
-    "Margin": 5.0,
-    "Parents": [
-      "PTV4_XGy"
-    ],
-    "HighResolution": null,
-    "Subtract": null,
-    "Comment": null
-  },
-  {
-    "Name": "OptNonPTV",
+    "Name": "OptNonPTV1_X",
     "Role": "Optimization",
     "Margin": 30.0,
     "Parents": [
-      "PTV1_XGy", "PTV2_XGy", "PTV3_XGy",
-      "PTV4_XGy", "PTV_LN_XGy"
+      "PTVs_X"
     ],
     "HighResolution": null,
     "Subtract": [
-      "PTV1_XGy", "PTV2_XGy", "PTV3_XGy",
-       "PTV4_XGy", "PTV_LN_XGy", "NonBody"
+      "PTVs_X"
     ],
     "Comment": "The ring surrounding the PTVs."
   },
   {
-    "Name":"Body-(PTVs+5mm)",
+    "Name":"Body-(PTVs_X+5mm)",
     "Role": "Optimization",
     "Margin":0.0,
     "Parents": [
-      "OptNonPTV"
+      "OptNonPTV1_X"
       ],
     "HighResolution": null,
     "Subtract": [
-      "PTV+5mm"
+      "PTVs_X+5mm"
     ],
     "Comment":"The body excluding a 5mm margin around the PTVs."
   }
