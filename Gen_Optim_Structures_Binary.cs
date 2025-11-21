@@ -105,14 +105,14 @@ namespace VMS.TPS
                 }
                 else if (relation.Role == "Planning" || relation.Role == "Optimization")
                 {
-                    try
-                    {
+                    //try
+                    //{
                         MakeNewStructure(relation, plan_structure_set);
-                    }
-                    catch (Exception e) {
-                        System.Windows.MessageBox.Show("Failed on structure " + relation.Name);
-                    }
-                    
+                    //}
+                    //catch (Exception e) {
+                    //    System.Windows.MessageBox.Show("Failed on structure " + relation.Name);
+                    //}
+
                 }
             }
 
@@ -149,7 +149,7 @@ namespace VMS.TPS
         /*
          * Purpose: To create a new structure based on structure relation from json
          * and add it to the patient's plan structure set.
-         * this function assumes that the parents of a new structure already exist. 
+         * this function assumes that the Union of a new structure already exist. 
          * Inputs:
          * - relation := a structure relation from which a new structure is built.
          * - plan_structure_set := The structure set in the treatment plan.
@@ -170,9 +170,9 @@ namespace VMS.TPS
             // depending on the parent or subtraction structures, we need to set the resolution
             // volume operations are only allowed for structures with the same resolution.
             bool needsHighResolution = false;
-            if (relation.Parents != null)
+            if (relation.Union != null)
             {
-                List<Structure> parent_structures = Get_structures_by_name(structure_list, relation.Parents);
+                List<Structure> parent_structures = Get_structures_by_name(structure_list, relation.Union);
                 // Check if any of the source structures are high resolution
                 needsHighResolution = parent_structures.Any(s => s.IsHighResolution);
                 if (needsHighResolution)
@@ -180,8 +180,8 @@ namespace VMS.TPS
                     newStructure.ConvertToHighResolution();
                 }
                 //get parent structure from context; apply union
-                List<Structure> parents_in_plan = Get_structures_by_name(structure_list, relation.Parents);
-                foreach (Structure parent in parents_in_plan)
+                List<Structure> Union_in_plan = Get_structures_by_name(structure_list, relation.Union);
+                foreach (Structure parent in Union_in_plan)
                 {
                     if (needsHighResolution & parent.CanConvertToHighResolution())
                     {
@@ -240,7 +240,7 @@ namespace VMS.TPS
             public string? Name { get; set; }
             public string? Role { get; set; }
             public double? Margin { get; set; }
-            public List<string>? Parents { get; set; }
+            public List<string>? Union { get; set; }
             public bool? HighResolution { get; set; }
             public List<string>? Subtract { get; set; }
             public string? Comment { get; set; }
@@ -333,7 +333,7 @@ namespace VMS.TPS
                 form.ShowDialog();
         }
         /*
-         * Purpose: To sort the structure relations such that parents and subtract 
+         * Purpose: To sort the structure relations such that Union and subtract 
          * structures always come before the child structure.
          */
         public List<Structure_Relation> ParentalSort(List<Structure_Relation> items)
@@ -357,13 +357,13 @@ namespace VMS.TPS
                 if (lookup.TryGetValue(name, out var item))
                 {
                     // Union of Parents and Subtract lists as combined parents
-                    var combinedParents = Enumerable.Empty<string>();
-                    if (item.Parents != null)
-                        combinedParents = combinedParents.Union(item.Parents);
+                    var combinedUnion = Enumerable.Empty<string>();
+                    if (item.Union != null)
+                        combinedUnion = combinedUnion.Union(item.Union);
                     if (item.Subtract != null)
-                        combinedParents = combinedParents.Union(item.Subtract);
+                        combinedUnion = combinedUnion.Union(item.Subtract);
 
-                    foreach (var parentName in combinedParents)
+                    foreach (var parentName in combinedUnion)
                     {
                         if (!string.IsNullOrWhiteSpace(parentName))
                             Dfs(parentName);
