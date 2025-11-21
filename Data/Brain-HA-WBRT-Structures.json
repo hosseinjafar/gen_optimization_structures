@@ -3,7 +3,7 @@
     "Name": "BODY",
     "Role": "Anatomical",
     "Margin": 0.0,
-    "Parents": null,
+    "Union": null,
     "HighResolution": null,
     "Subtract": null,
     "Comment": null
@@ -12,7 +12,7 @@
     "Name": "Brain",
     "Role": "Anatomical",
     "Margin": 0.0,
-    "Parents": null,
+    "Union": null,
     "HighResolution": null,
     "Subtract": null,
     "Comment": null
@@ -21,7 +21,7 @@
     "Name": "Eye Lt",
     "Role": "Anatomical",
     "Margin": 0.0,
-    "Parents": null,
+    "Union": null,
     "HighResolution": null,
     "Subtract": null,
     "Comment": null
@@ -30,7 +30,7 @@
     "Name": "Eye Rt",
     "Role": "Anatomical",
     "Margin": 0.0,
-    "Parents": null,
+    "Union": null,
     "HighResolution": null,
     "Subtract": null,
     "Comment": null
@@ -39,7 +39,7 @@
     "Name": "Inner Ear Lt",
     "Role": "Anatomical",
     "Margin": 0.0,
-    "Parents": null,
+    "Union": null,
     "HighResolution": null,
     "Subtract": null,
     "Comment": null
@@ -48,7 +48,7 @@
     "Name": "Inner Ear Rt",
     "Role": "Anatomical",
     "Margin": 0.0,
-    "Parents": null,
+    "Union": null,
     "HighResolution": null,
     "Subtract": null,
     "Comment": null
@@ -57,7 +57,7 @@
     "Name": "Lens Lt",
     "Role": "Anatomical",
     "Margin": 0.0,
-    "Parents": null,
+    "Union": null,
     "HighResolution": null,
     "Subtract": null,
     "Comment": null
@@ -66,7 +66,7 @@
     "Name": "Lens Rt",
     "Role": "Anatomical",
     "Margin": 0.0,
-    "Parents": null,
+    "Union": null,
     "HighResolution": null,
     "Subtract": null,
     "Comment": null
@@ -75,7 +75,7 @@
     "Name": "Optic Chiasm",
     "Role": "Anatomical",
     "Margin": 0.0,
-    "Parents": null,
+    "Union": null,
     "HighResolution": null,
     "Subtract": null,
     "Comment": null
@@ -84,7 +84,7 @@
     "Name": "Optic Nerve Lt",
     "Role": "Anatomical",
     "Margin": 0.0,
-    "Parents": null,
+    "Union": null,
     "HighResolution": null,
     "Subtract": null,
     "Comment": null
@@ -93,7 +93,7 @@
     "Name": "Optic Nerve Rt",
     "Role": "Anatomical",
     "Margin": 0.0,
-    "Parents": null,
+    "Union": null,
     "HighResolution": null,
     "Subtract": null,
     "Comment": null
@@ -102,7 +102,7 @@
     "Name": "Spinal Cord",
     "Role": "Anatomical",
     "Margin": 0.0,
-    "Parents": null,
+    "Union": null,
     "HighResolution": null,
     "Subtract": null,
     "Comment": null
@@ -111,7 +111,7 @@
     "Name": "Hippo Lt",
     "Role": "Anatomical",
     "Margin": 0.0,
-    "Parents": null,
+    "Union": null,
     "HighResolution": true,
     "Subtract": null,
     "Comment": "Follow RTOG 0933 Atlas"
@@ -120,7 +120,7 @@
     "Name": "Hippo Rt",
     "Role": "Anatomical",
     "Margin": 0.0,
-    "Parents": null,
+    "Union": null,
     "HighResolution": true,
     "Subtract": null,
     "Comment": "Follow RTOG 0933 Atlas"
@@ -129,7 +129,7 @@
     "Name": "Hippocampi",
     "Role": "Anatomical",
     "Margin": 0.0,
-    "Parents": [
+    "Union": [
       "Hippo Lt",
       "Hippo Rt"
     ],
@@ -141,7 +141,7 @@
     "Name": "NonePTV",
     "Role": "Anatomical",
     "Margin": 0.0,
-    "Parents": [
+    "Union": [
       "Body"
     ],
     "HighResolution": null,
@@ -154,7 +154,7 @@
     "Name": "Lens PRV Lt",
     "Role": "Planning",
     "Margin": 3.0,
-    "Parents": [
+    "Union": [
       "Lens Lt"
     ],
     "HighResolution": null,
@@ -165,7 +165,7 @@
     "Name": "Lens PRV Rt",
     "Role": "Planning",
     "Margin": 3.0,
-    "Parents": [
+    "Union": [
       "Lens Rt"
     ],
     "HighResolution": null,
@@ -176,7 +176,7 @@
     "Name": "CTV_30",
     "Role": "Planning",
     "Margin": 0.0,
-    "Parents": [
+    "Union": [
       "Brain"
     ],
     "HighResolution": null,
@@ -187,7 +187,7 @@
     "Name": "GTV",
     "Role": "Anatomical",
     "Margin": 0.0,
-    "Parents": null,
+    "Union": null,
     "HighResolution": true,
     "Subtract": null,
     "Comment": "Outline if only it falls within 5 mm of Hippocampi."
@@ -196,7 +196,7 @@
     "Name": "GTV+5mm",
     "Role": "Planning",
     "Margin": 5.0,
-    "Parents": [
+    "Union": [
       "GTV"
     ],
     "HighResolution": true,
@@ -207,7 +207,7 @@
     "Name": "Hippocampi_05",
     "Role": "Planning",
     "Margin": 5.0,
-    "Parents": [
+    "Union": [
       "Hippocampi"
     ],
     "HighResolution": true,
@@ -218,7 +218,7 @@
     "Name": "PTV_30",
     "Role": "Planning",
     "Margin": 0.0,
-    "Parents": [
+    "Union": [
       "CTV_30",
       "GTV+5mm"
     ],
@@ -232,7 +232,7 @@
     "Name": "optPTV_30",
     "Role": "Optimization",
     "Margin": 3.0,
-    "Parents": [
+    "Union": [
       "PTV_30"
     ],
     "HighResolution": true,
@@ -243,7 +243,7 @@
     "Name": "optHippo Lt",
     "Role": "Optimization",
     "Margin": 4.0,
-    "Parents": [
+    "Union": [
       "Hippo Lt"
     ],
     "HighResolution": true,
@@ -256,7 +256,7 @@
     "Name": "optHippo Rt",
     "Role": "Optimization",
     "Margin": 4.0,
-    "Parents": [
+    "Union": [
       "Hippo Rt"
     ],
     "HighResolution": true,
@@ -269,7 +269,7 @@
     "Name": "optHippo",
     "Role": "Optimization",
     "Margin": 4.0,
-    "Parents": [
+    "Union": [
       "Hippocampi"
     ],
     "HighResolution": true,
@@ -282,7 +282,7 @@
     "Name": "optNonPTV",
     "Role": "Optimization",
     "Margin": 30.0,
-    "Parents": [
+    "Union": [
       "NonePTV"
     ],
     "HighResolution": null,
@@ -293,7 +293,7 @@
     "Name": "Hippo_Limits",
     "Role": "Helper",
     "Margin": 0.0,
-    "Parents": [
+    "Union": [
       "Hippocampi_05",
       "PTV_30"
     ],
