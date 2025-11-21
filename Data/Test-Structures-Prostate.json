@@ -9,7 +9,7 @@
     "Comment": "The mask where the entire scan volume is 1."
   },
   {
-    "Name": "Body",
+    "Name": "BODY",
     "Role": "Anatomical",
     "Margin": 0.0,
     "Parents": null,
@@ -18,7 +18,7 @@
     "Comment": null
   },
   {
-    "Name": "NonBody",
+    "Name": "NonBODY",
     "Role": "Planning",
     "Margin": 0.0,
     "Parents": [
@@ -26,9 +26,9 @@
     ],
     "HighResolution": null,
     "Subtract": [
-      "Body"
+      "BODY"
     ],
-    "Comment": "Not body operation on esapi may be better?"
+    "Comment": "Not BODY operation on esapi may be better?"
   },
   {
     "Name": "PTV1_46Gy",
@@ -91,7 +91,7 @@
     "Role": "Planning",
     "Margin": 0.0,
     "Parents": [
-      "Body"
+      "BODY"
     ],
     "HighResolution": null,
     "Subtract": [
@@ -104,7 +104,7 @@
     "Role": "Planning",
     "Margin": 0.0,
     "Parents": [
-      "Body"
+      "BODY"
     ],
     "HighResolution": null,
     "Subtract": [
@@ -117,7 +117,7 @@
     "Role": "Planning",
     "Margin": 0.0,
     "Parents": [
-      "Body"
+      "BODY"
     ],
     "HighResolution": null,
     "Subtract": [
@@ -126,21 +126,8 @@
     "Comment": null
   },
   {
-    "Name": "NonPTV4",
-    "Role": "Planning",
-    "Margin": 0.0,
-    "Parents": [
-      "Body"
-    ],
-    "HighResolution": null,
-    "Subtract": [
-      "PTV4_XGy"
-    ],
-    "Comment": null
-  },
-  {
     "Name": "PTVs_X+5mm",
-    "Role": "Helping",
+    "Role": "Planning",
     "Margin": 5.0,
     "Parents": [
       "PTVs_X"
@@ -163,7 +150,7 @@
     "Comment": "The ring surrounding the PTVs."
   },
   {
-    "Name":"Body-(PTVs_X+5mm)",
+    "Name":"Body(PTVsX+5mm)",
     "Role": "Optimization",
     "Margin":0.0,
     "Parents": [
@@ -173,6 +160,6 @@
     "Subtract": [
       "PTVs_X+5mm"
     ],
-    "Comment":"The body excluding a 5mm margin around the PTVs."
+    "Comment":"The BODY excluding a 5mm margin around the PTVs."
   }
 ]
