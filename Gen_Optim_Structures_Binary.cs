@@ -105,13 +105,13 @@ namespace VMS.TPS
                 }
                 else if (relation.Role == "Planning" || relation.Role == "Optimization")
                 {
-                    //try
-                    //{
+                    try
+                    {
                         MakeNewStructure(relation, plan_structure_set);
-                    //}
-                    //catch (Exception e) {
-                    //    System.Windows.MessageBox.Show("Failed on structure " + relation.Name);
-                    //}
+                    }
+                    catch (Exception e) {
+                        System.Windows.MessageBox.Show("Failed on structure " + relation.Name);
+                    }
 
                 }
             }
@@ -194,6 +194,28 @@ namespace VMS.TPS
             {
                 newStructure.SegmentVolume = newStructure.SegmentVolume.Margin(relation.Margin.Value);
             }
+
+            // get intersect structures from context; apply intersection
+            // this is used for cropping things outside of body
+            if (relation.Intersect != null) 
+            {
+                List<Structure> intersect_structures = Get_structures_by_name(structure_list, relation.Intersect);
+                needsHighResolution = intersect_structures.Any(s => s.IsHighResolution);
+                foreach (Structure intersectStructure in intersect_structures)
+                {
+                    if (needsHighResolution & intersectStructure.CanConvertToHighResolution())
+                    {
+                        intersectStructure.ConvertToHighResolution();
+                    }
+                    if (!intersectStructure.IsHighResolution & newStructure.IsHighResolution)
+                    {
+                        // XXX gotta figure out the resolution business!
+                        return;
+                    }
+                    newStructure.SegmentVolume = newStructure.SegmentVolume.And(intersectStructure.SegmentVolume);
+                }
+            }
+
             // get subtract structures from context; apply subtraction
             if (relation.Subtract != null)
             {
@@ -243,6 +265,7 @@ namespace VMS.TPS
             public List<string>? Union { get; set; }
             public bool? HighResolution { get; set; }
             public List<string>? Subtract { get; set; }
+            public List<string>? Intersect {  get; set; } 
             public string? Comment { get; set; }
         }
 

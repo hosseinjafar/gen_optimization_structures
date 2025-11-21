@@ -1,13 +1,4 @@
 [
-    {
-    "Name": "ScanVolume",
-    "Role": "Planning",
-    "Margin": 0.0,
-    "Union": null,
-    "HighResolution": null,
-    "Subtract": null,
-    "Comment": "The mask where the entire scan volume is 1."
-  },
   {
     "Name": "BODY",
     "Role": "Anatomical",
@@ -16,19 +7,6 @@
     "HighResolution": null,
     "Subtract": null,
     "Comment": null
-  },
-  {
-    "Name": "NonBODY",
-    "Role": "Planning",
-    "Margin": 0.0,
-    "Union": [
-      "ScanVolume"
-    ],
-    "HighResolution": null,
-    "Subtract": [
-      "BODY"
-    ],
-    "Comment": "Not BODY operation on esapi may be better?"
   },
   {
     "Name": "PTV1_46Gy",
@@ -144,22 +122,28 @@
       "PTVs_X"
     ],
     "HighResolution": null,
+    "Intersect": [
+      "BODY"
+    ],
     "Subtract": [
       "PTVs_X"
     ],
     "Comment": "The ring surrounding the PTVs."
   },
   {
-    "Name":"Body(PTVsX+5mm)",
+    "Name": "Body-(PTVsX+5mm)",
     "Role": "Optimization",
-    "Margin":0.0,
+    "Margin": 0.0,
     "Union": [
       "OptNonPTV1_X"
-      ],
+    ],
     "HighResolution": null,
+    "Intersect": [
+      "BODY"
+    ],
     "Subtract": [
       "PTVs_X+5mm"
     ],
-    "Comment":"The BODY excluding a 5mm margin around the PTVs."
+    "Comment": "The BODY excluding a 5mm margin around the PTVs."
   }
 ]
