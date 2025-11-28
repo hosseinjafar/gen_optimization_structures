@@ -27,18 +27,19 @@
     "Comment": "May not be present all the time."
   },
   {
-    "Name": "PTVs_X",
+    "Name": "PTVs",
     "Role": "Planning",
     "Margin": 0.0,
     "Union": [
-      "PTV1_46Gy", "PTV_LN_46Gy"
+      "PTV1_46Gy",
+      "PTV_LN_46Gy"
     ],
     "HighResolution": null,
     "Subtract": null,
     "Comment": null
   },
   {
-    "Name": "NonPTV1_X",
+    "Name": "NonPTV1",
     "Role": "Planning",
     "Margin": 0.0,
     "Union": [
@@ -46,50 +47,50 @@
     ],
     "HighResolution": null,
     "Subtract": [
-      "PTVs_X"
+      "PTVs"
     ],
     "Comment": null
   },
   {
-    "Name": "PTVs_X+5mm",
+    "Name": "PTVs+5mm",
     "Role": "Planning",
     "Margin": 5.0,
     "Union": [
-      "PTVs_X"
+      "PTVs"
     ],
     "HighResolution": null,
     "Subtract": null,
     "Comment": null
   },
   {
-    "Name": "OptNonPTV1_X",
+    "Name": "OptNonPTV1",
     "Role": "Optimization",
     "Margin": 30.0,
     "Union": [
-      "PTVs_X"
+      "PTVs"
     ],
     "HighResolution": null,
     "Intersect": [
       "BODY"
     ],
     "Subtract": [
-      "PTVs_X"
+      "PTVs"
     ],
     "Comment": "The ring surrounding the PTVs."
   },
   {
-    "Name": "Body-(PTVsX+5mm)",
+    "Name": "Body-(PTVs+5mm)",
     "Role": "Optimization",
     "Margin": 0.0,
     "Union": [
-      "OptNonPTV1_X"
+      "OptNonPTV1"
     ],
     "HighResolution": null,
     "Intersect": [
       "BODY"
     ],
     "Subtract": [
-      "PTVs_X+5mm"
+      "PTVs+5mm"
     ],
     "Comment": "The BODY excluding a 5mm margin around the PTVs."
   },
@@ -103,7 +104,7 @@
     "Comment": null
   },
   {
-    "Name": "NonPTV2_X",
+    "Name": "NonPTV2",
     "Role": "Planning",
     "Margin": 0.0,
     "Union": [
@@ -116,7 +117,7 @@
     "Comment": null
   },
   {
-    "Name": "PTV2X+5mm",
+    "Name": "PTV2+5mm",
     "Role": "Planning",
     "Margin": 5.0,
     "Union": [
@@ -127,7 +128,7 @@
     "Comment": null
   },
   {
-    "Name": "OptNonPTV2_X",
+    "Name": "OptNonPTV2",
     "Role": "Optimization",
     "Margin": 30.0,
     "Union": [
@@ -143,18 +144,18 @@
     "Comment": "The ring surrounding the PTVs."
   },
   {
-    "Name": "Body-(PTV2X+5mm)",
+    "Name": "Body-(PTV2+5mm)",
     "Role": "Optimization",
     "Margin": 0.0,
     "Union": [
-      "OptNonPTV2_X"
+      "OptNonPTV2"
     ],
     "HighResolution": null,
     "Intersect": [
       "BODY"
     ],
     "Subtract": [
-      "PTV2X+5mm"
+      "PTV2+5mm"
     ],
     "Comment": "The BODY excluding a 5mm margin around the PTVs."
   },
@@ -168,6 +169,62 @@
     "Comment": null
   },
   {
+    "Name": "NonPTV3",
+    "Role": "Planning",
+    "Margin": 0.0,
+    "Union": [
+      "BODY"
+    ],
+    "HighResolution": null,
+    "Subtract": [
+      "PTV3_22Gy"
+    ],
+    "Comment": null
+  },
+  {
+    "Name": "PTV3+5mm",
+    "Role": "Planning",
+    "Margin": 5.0,
+    "Union": [
+      "PTV3_22Gy"
+    ],
+    "HighResolution": null,
+    "Subtract": null,
+    "Comment": null
+  },
+  {
+    "Name": "OptNonPTV3",
+    "Role": "Optimization",
+    "Margin": 30.0,
+    "Union": [
+      "PTV3_22Gy"
+    ],
+    "HighResolution": null,
+    "Intersect": [
+      "BODY"
+    ],
+    "Subtract": [
+      "PTV3_22Gy"
+    ],
+    "Comment": "The ring surrounding the PTVs."
+  },
+  {
+    "Name": "Body-(PTV3+5mm)",
+    "Role": "Optimization",
+    "Margin": 0.0,
+    "Union": [
+      "OptNonPTV3"
+    ],
+    "HighResolution": null,
+    "Intersect": [
+      "BODY"
+    ],
+    "Subtract": [
+      "PTV3+5mm"
+    ],
+    "Comment": "The BODY excluding a 5mm margin around the PTVs."
+  },
+  {
     "Name": "PTV4_XGy",
     "Role": "Anatomical",
     "Margin": 0.0,
@@ -175,5 +232,61 @@
     "HighResolution": null,
     "Subtract": null,
     "Comment": "May not be present all the time."
+  },
+  {
+    "Name": "NonPTV_XGy",
+    "Role": "Planning",
+    "Margin": 0.0,
+    "Union": [
+      "BODY"
+    ],
+    "HighResolution": null,
+    "Subtract": [
+      "PTV4_XGy"
+    ],
+    "Comment": null
+  },
+  {
+    "Name": "PTV4+5mm",
+    "Role": "Planning",
+    "Margin": 5.0,
+    "Union": [
+      "PTV4_XGy"
+    ],
+    "HighResolution": null,
+    "Subtract": null,
+    "Comment": null
+  },
+  {
+    "Name": "OptNonPTV4",
+    "Role": "Optimization",
+    "Margin": 30.0,
+    "Union": [
+      "PTV4_XGy"
+    ],
+    "HighResolution": null,
+    "Intersect": [
+      "BODY"
+    ],
+    "Subtract": [
+      "PTV4_XGy"
+    ],
+    "Comment": "The ring surrounding the PTVs."
+  },
+  {
+    "Name": "Body-(PTV4+5mm)",
+    "Role": "Optimization",
+    "Margin": 0.0,
+    "Union": [
+      "OptNonPTV4"
+    ],
+    "HighResolution": null,
+    "Intersect": [
+      "BODY"
+    ],
+    "Subtract": [
+      "PTV4+5mm"
+    ],
+    "Comment": "The BODY excluding a 5mm margin around the PTVs."
   }
 ]
