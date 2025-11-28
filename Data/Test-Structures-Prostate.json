@@ -54,7 +54,7 @@
     "Comment": "May not be present all the time."
   },
   {
-    "Name": "PTVs_X",
+    "Name": "PTVs",
     "Role": "Planning",
     "Margin": 0.0,
     "Union": [
@@ -65,7 +65,7 @@
     "Comment": null
   },
   {
-    "Name": "NonPTV1_X",
+    "Name": "NonPTV1",
     "Role": "Planning",
     "Margin": 0.0,
     "Union": [
@@ -104,45 +104,45 @@
     "Comment": null
   },
   {
-    "Name": "PTVs_X+5mm",
+    "Name": "PTVs+5mm",
     "Role": "Planning",
     "Margin": 5.0,
     "Union": [
-      "PTVs_X"
+      "PTVs"
     ],
     "HighResolution": null,
     "Subtract": null,
     "Comment": null
   },
   {
-    "Name": "OptNonPTV1_X",
+    "Name": "optNonPTV1",
     "Role": "Optimization",
     "Margin": 30.0,
     "Union": [
-      "PTVs_X"
+      "PTVs"
     ],
     "HighResolution": null,
     "Intersect": [
       "BODY"
     ],
     "Subtract": [
-      "PTVs_X"
+      "PTVs"
     ],
     "Comment": "The ring surrounding the PTVs."
   },
   {
-    "Name": "Body-(PTVsX+5mm)",
+    "Name": "Body-(PTVs+5mm)",
     "Role": "Optimization",
     "Margin": 0.0,
     "Union": [
-      "OptNonPTV1_X"
+      "optNonPTV1"
     ],
     "HighResolution": null,
     "Intersect": [
       "BODY"
     ],
     "Subtract": [
-      "PTVs_X+5mm"
+      "PTVs+5mm"
     ],
     "Comment": "The BODY excluding a 5mm margin around the PTVs."
   }
