@@ -161,11 +161,17 @@ namespace VMS.TPS
         {
             List<Structure> structure_list = plan_structure_set.Structures.ToList();
             bool structureExists = structure_list.Any(s => s.Name == relation.Name);
-            if (structureExists)
+            Structure newStructure;
+            if (!structureExists)
             {
-                return;
+                newStructure = plan_structure_set.AddStructure("Organ", relation.Name);
             }
-            Structure newStructure = plan_structure_set.AddStructure("Organ", relation.Name);
+            else 
+            {
+                List<string> query_structures = new List<string> { relation.Name };
+                newStructure = Get_structures_by_name(structure_list, query_structures).First();
+            }
+
 
             // depending on the parent or subtraction structures, we need to set the resolution
             // volume operations are only allowed for structures with the same resolution.
